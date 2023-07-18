@@ -1,0 +1,30 @@
+server.port: 7779
+eureka:
+  instance:
+    # enable to register multiple app instances with a random server port
+    instance-id: ${spring.application.name}:${random.uuid}
+logging:
+  level:
+    com.onboard.cinema.book.show: DEBUG
+
+spring:
+  application:
+    name: cinema-mgmt-service
+  config:
+    activate:
+      on-profile: local
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888/}
+  jpa:
+    database: POSTGRESQL
+    open-in-view: true
+    show-sql: true
+    hibernate:
+     ddl-auto: create
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=cinema&binaryTransfer=true&reWriteBatchedInserts=true
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+    schema: classpath:init-schema.sql
+    initialization-mode: always
